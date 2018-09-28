@@ -7,37 +7,37 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/*
- * Class:     org_openalpr_AlprJNIWrapper
- * Method:    recognize
- * Signature: (Ljava/lang/String;I)Ljava/lang/String;
- */
-JNIEXPORT jstring JNICALL Java_org_openalpr_AlprJNIWrapper_recognize
-  (JNIEnv *, jobject, jstring, jint);
+	/*
+	 * Class:     org_openalpr_AlprJNIWrapper
+	 * Method:    recognize
+	 * Signature: (Ljava/lang/String;I)Ljava/lang/String;
+	 */
+	JNIEXPORT jstring JNICALL Java_org_openalpr_AlprJNIWrapper_recognize
+	(JNIEnv *, jobject, jstring, jint);
 
-/*
- * Class:     org_openalpr_AlprJNIWrapper
- * Method:    recognizeWithCountryNRegion
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Ljava/lang/String;
- */
-JNIEXPORT jstring JNICALL Java_org_openalpr_AlprJNIWrapper_recognizeWithCountryNRegion
-  (JNIEnv *, jobject, jstring, jstring, jstring, jint);
+	/*
+	 * Class:     org_openalpr_AlprJNIWrapper
+	 * Method:    recognizeWithCountryNRegion
+	 * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Ljava/lang/String;
+	 */
+	JNIEXPORT jstring JNICALL Java_org_openalpr_AlprJNIWrapper_recognizeWithCountryNRegion
+	(JNIEnv *, jobject, jstring, jstring, jstring, jint);
 
-/*
- * Class:     org_openalpr_AlprJNIWrapper
- * Method:    recognizeWithCountryRegionNConfig
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Ljava/lang/String;
- */
-JNIEXPORT jstring JNICALL Java_org_openalpr_AlprJNIWrapper_recognizeWithCountryRegionNConfig
-  (JNIEnv *, jobject, jstring, jstring, jstring, jstring, jint);
+	/*
+	 * Class:     org_openalpr_AlprJNIWrapper
+	 * Method:    recognizeWithCountryRegionNConfig
+	 * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Ljava/lang/String;
+	 */
+	JNIEXPORT jstring JNICALL Java_org_openalpr_AlprJNIWrapper_recognizeWithCountryRegionNConfig
+	(JNIEnv *, jobject, jstring, jstring, jstring, jstring, jint);
 
-/*
- * Class:     org_openalpr_AlprJNIWrapper
- * Method:    version
- * Signature: ()Ljava/lang/String;
- */
-JNIEXPORT jstring JNICALL Java_org_openalpr_AlprJNIWrapper_version
-  (JNIEnv *, jobject);
+	/*
+	 * Class:     org_openalpr_AlprJNIWrapper
+	 * Method:    version
+	 * Signature: ()Ljava/lang/String;
+	 */
+	JNIEXPORT jstring JNICALL Java_org_openalpr_AlprJNIWrapper_version
+	(JNIEnv *, jobject);
 
 #ifdef __cplusplus
 }

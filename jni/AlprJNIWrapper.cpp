@@ -6,13 +6,12 @@
 #include <cstdio>
 #include <iostream>
 
-// openCV includes
+ // openCV includes
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 
 // open alpr includes
 #include "support/filesystem.h"
-#include "support/timing.h"
 #include "alpr.h"
 #include "cjson.h"
 
@@ -20,7 +19,7 @@
 #include "AlprNative.h"
 
 JNIEXPORT jstring JNICALL Java_org_openalpr_AlprJNIWrapper_recognize(JNIEnv *env,
-		jobject object, jstring jimgFilePath, jint jtopN)
+	jobject object, jstring jimgFilePath, jint jtopN)
 {
 	jstring defaultCountry = env->NewStringUTF("us");
 	jstring defaultRegion = env->NewStringUTF("");
@@ -29,23 +28,23 @@ JNIEXPORT jstring JNICALL Java_org_openalpr_AlprJNIWrapper_recognize(JNIEnv *env
 }
 
 JNIEXPORT jstring JNICALL Java_org_openalpr_AlprJNIWrapper_recognizeWithCountryNRegion(
-		JNIEnv *env, jobject object, jstring jcountry,
-		jstring jregion, jstring jimgFilePath, jint jtopN)
+	JNIEnv *env, jobject object, jstring jcountry,
+	jstring jregion, jstring jimgFilePath, jint jtopN)
 {
 	jstring defaultConfigFilePath = env->NewStringUTF(CONFIG_FILE);
 	return _recognize(env, object, jcountry, jregion, jimgFilePath, defaultConfigFilePath, jtopN);
 }
 
 JNIEXPORT jstring JNICALL Java_org_openalpr_AlprJNIWrapper_recognizeWithCountryRegionNConfig
-  (JNIEnv *env, jobject object, jstring jcountry, jstring jregion,
-		  jstring jimgFilePath, jstring jconfigFilePath, jint jtopN)
+(JNIEnv *env, jobject object, jstring jcountry, jstring jregion,
+	jstring jimgFilePath, jstring jconfigFilePath, jint jtopN)
 {
 	return _recognize(env, object, jcountry, jregion, jimgFilePath, jconfigFilePath, jtopN);
 }
 
 jstring _recognize(JNIEnv *env, jobject object,
-		jstring jcountry, jstring jregion, jstring jimgFilePath,
-		jstring jconfigFilePath, jint jtopN)
+	jstring jcountry, jstring jregion, jstring jimgFilePath,
+	jstring jconfigFilePath, jint jtopN)
 {
 
 	const char* countryChars = env->GetStringUTFChars(jcountry, NULL);
@@ -54,7 +53,7 @@ jstring _recognize(JNIEnv *env, jobject object,
 
 	env->ReleaseStringUTFChars(jcountry, countryChars);
 
-	if(country.empty())
+	if (country.empty())
 	{
 		country = "us";
 	}
@@ -65,7 +64,7 @@ jstring _recognize(JNIEnv *env, jobject object,
 
 	env->ReleaseStringUTFChars(jconfigFilePath, configFilePathChars);
 
-	if(configFilePath.empty())
+	if (configFilePath.empty())
 	{
 		configFilePath = "/etc/openalpr/openalpr.conf";
 	}
@@ -77,7 +76,7 @@ jstring _recognize(JNIEnv *env, jobject object,
 	std::string response = "";
 
 	cv::Mat frame;
-	Alpr alpr(country, configFilePath);
+	alpr::Alpr alpr(country, configFilePath);
 
 	const char* regionChars = env->GetStringUTFChars(jregion, NULL);
 
@@ -85,7 +84,7 @@ jstring _recognize(JNIEnv *env, jobject object,
 
 	env->ReleaseStringUTFChars(jregion, regionChars);
 
-	if(region.empty())
+	if (region.empty())
 	{
 		alpr.setDetectRegion(true);
 		alpr.setDefaultRegion(region);
@@ -100,7 +99,7 @@ jstring _recognize(JNIEnv *env, jobject object,
 		return env->NewStringUTF(response.c_str());
 	}
 
-	if(fileExists(imgFilePath))
+	if (alpr::fileExists(imgFilePath))
 	{
 		frame = cv::imread(imgFilePath);
 		response = detectandshow(&alpr, frame, "");
@@ -114,35 +113,26 @@ jstring _recognize(JNIEnv *env, jobject object,
 }
 
 JNIEXPORT jstring JNICALL Java_org_openalpr_AlprJNIWrapper_version
-  (JNIEnv *env, jobject object)
+(JNIEnv *env, jobject object)
 {
-	return env->NewStringUTF(Alpr::getVersion().c_str());
+	return env->NewStringUTF(alpr::Alpr::getVersion().c_str());
 }
 
-std::string detectandshow(Alpr* alpr, cv::Mat frame, std::string region) 
+std::string detectandshow(alpr::Alpr* alpr, cv::Mat frame, std::string region)
 {
-	std::vector < uchar > buffer;
+	std::vector<uchar> ubuffer;
 	std::string resultJson = "";
-	cv::imencode(".bmp", frame, buffer);
+	cv::imencode(".bmp", frame, ubuffer);
 
-	timespec startTime;
-	getTime(&startTime);
+	std::vector<char> sbuffer;
+	std::copy(ubuffer.begin(), ubuffer.end(), std::back_inserter(sbuffer));
 
-	std::vector < AlprResult > results = alpr->recognize(buffer);
+	alpr::AlprResults results = alpr->recognize(sbuffer);
 
-	timespec endTime;
-	getTime(&endTime);
-	double totalProcessingTime = diffclock(startTime, endTime);
-
-	if (results.size() > 0)
-	{
-		resultJson = alpr->toJson(results, totalProcessingTime);
-	}
-
-	return resultJson;
+	return alpr->toJson(results);
 }
 
-std::string errorJsonString(std::string msg) 
+std::string errorJsonString(std::string msg)
 {
 	cJSON *root;
 	root = cJSON_CreateObject();

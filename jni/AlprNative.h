@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   AlprNative.h
  * Author: sujay
  *
@@ -15,13 +15,13 @@
 extern "C" {
 #endif
 
-jstring _recognize(JNIEnv *, jobject,
-		jstring , jstring , jstring ,
-		jstring , jint );
+	jstring _recognize(JNIEnv *, jobject,
+		jstring, jstring, jstring,
+		jstring, jint);
 
-std::string detectandshow( Alpr* , cv::Mat , std::string );
+	std::string detectandshow(alpr::Alpr*, cv::Mat, std::string);
 
-std::string errorJsonString(std::string);
+	std::string errorJsonString(std::string);
 
 
 #ifdef	__cplusplus
