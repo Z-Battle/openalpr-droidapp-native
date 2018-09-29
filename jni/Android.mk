@@ -17,6 +17,18 @@ LIB_PATH := $(LOCAL_PATH)/../libs/armeabi-v7a
 
 include $(CLEAR_VARS)
 
+LOCAL_MODULE := jpg
+LOCAL_SRC_FILES := $(LOCAL_PATH)/../../tess2/tess-two/libs/armeabi-v7a/libjpgt.so
+include $(PREBUILT_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := png
+LOCAL_SRC_FILES := $(LOCAL_PATH)/../../tess2/tess-two/libs/armeabi-v7a/libpngt.so
+include $(PREBUILT_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
+
 LOCAL_MODULE := leptonica
 LOCAL_SRC_FILES := $(LOCAL_PATH)/../../tess2/tess-two/libs/armeabi-v7a/liblept.so
 include $(PREBUILT_SHARED_LIBRARY)
@@ -59,7 +71,7 @@ LOCAL_SRC_FILES += $(HEADER_LIST:$(LOCAL_PATH)/%=%)
 LOCAL_SRC_FILES += $(SOURCE_LIST:$(LOCAL_PATH)/%=%)
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../../openalpr/src/openalpr
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../../OpenCV-android-sdk/sdk/native/include
-LOCAL_SHARED_LIBRARIES += tesseract leptonica
+LOCAL_SHARED_LIBRARIES += tesseract leptonica png jpg
 LOCAL_STATIC_LIBRARIES += openalpr support simpleini
 LOCAL_LDLIBS := -llog
 
